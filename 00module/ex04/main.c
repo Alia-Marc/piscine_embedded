@@ -2,40 +2,43 @@
 #include <util/delay.h>
 
 
+// Check sur le PIND si le bit correspondant est actif ou non
 int	is_pressed(int bit)
 {
-	return (!((PIND >> bit) & 1));
+	return (!(PIND >> bit & 1));
 }
 
 int main() 
 {
+	// Mets la Data Direction Register du port B en mode output sur les pins correpondant aux 4 leds
 	DDRB = 1 << DDB0 | 1 << DDB1 | 1 << DDB2 | 1 << DDB4;
 
 	int 	value = 0;
-	char	SW1_pressed = is_pressed(PIND2);
-	char	SW1_press;
-	char	SW2_pressed = is_pressed(PIND4);
-	char	SW2_press;
+	char	SW1_last_state = is_pressed(PIND2);
+	char	SW1_current_state;
+	char	SW2_last_state = is_pressed(PIND4);
+	char	SW2_current_state;
+
 	while (1)
 	{
 		_delay_ms(50);
 
-		SW1_press = is_pressed(PIND2);
-		if (!SW1_pressed && SW1_press && value < 15)
+		// Si l'etat actuel du PIND2 est actif et que l'etat precedant ne l'est plus, alors on incremente la value, en protegeant l'overflow
+		SW1_current_state = is_pressed(PIND2);
+		if (!SW1_last_state && SW1_current_state && value < 15)
 			value++;
-		SW1_pressed = SW1_press;
+		SW1_last_state = SW1_current_state;
 
-		SW2_press = is_pressed(PIND4);
-		if (!SW2_pressed && SW2_press && value > 1)
+		// Si l'etat actuel du PIND2 est actif et que l'etat precedant ne l'est plus, alors on decremente la value, en protegeant l'overflow
+		SW2_current_state = is_pressed(PIND4);
+		if (!SW2_last_state && SW2_current_state && value > 0)
 			value--;
-		SW2_pressed = SW2_press;
-		
-		value = value % 16;
+		SW2_last_state = SW2_current_state;
 
+		// Assigne la value a chaque PORTBx en fonction de la value
 		PORTB = ((1 << PORTB0) & value | (1 << PORTB1) & value | (1 << PORTB2) & value | ((1 << PORTB3) & value) << 1);
-	
 	}
 }
 
-// Informations utiles, sur la documentation de ATmega328p, de comment utiliser les registres de chaque pin,
+// Informations utiles, sur la documentation de ATmega328p 14.1, 14.2, de comment utiliser les registres de chaque pin,
 // en reperant lesquels utiliser sur le schematic de la chip

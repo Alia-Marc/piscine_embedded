@@ -11,3 +11,5 @@ int main()
 	// car 3 = 00000011
 	PORTB = 1 << PB0;
 }
+
+// Informations utiles, sur la documentation de ATmega328p 14.1, 14.2, de comment utiliser les registres de chaque pin
