@@ -10,10 +10,10 @@ int main()
 		// Si le bit est 0 on allume PB0 sinon on l'eteint
 		if ((PIND >> PIND2) & 1)
 		// On assigne 0 au premier bit de PORTB sans toucher aux autres
-			PORTB &= ~(1 << PB0);
+			PORTB &= ~(1 << PORTB0);
 		else
 		// On assigne 1 au premier bit de PORTB sans toucher aux autres
-			PORTB |= (1 << PB0); 
+			PORTB |= (1 << PORTB0); 
 	}
 }
 

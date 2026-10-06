@@ -9,7 +9,7 @@ int main()
 	// Qui est le pin associe a l'allumage de la led D1, sur le schematic de la chip
 	// On peut donc allumer les led comme si c'etait une representatiom binaire, si je mets PORTB = 3 j'aurais la led D1 et D2 d'allumees
 	// car 3 = 00000011
-	PORTB = 1 << PB0;
+	PORTB = 1 << PORTB0;
 }
 
 // Informations utiles, sur la documentation de ATmega328p 14.1, 14.2, de comment utiliser les registres de chaque pin

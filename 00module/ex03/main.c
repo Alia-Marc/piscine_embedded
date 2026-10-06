@@ -11,7 +11,7 @@ int main()
 		// Si le bit est 0 on toggle
 		if (!((PIND >> PIND2) & 1))
 		// On toggle le bit de PB0
-			PORTB ^= (1 << PB0);
+			PORTB ^= (1 << PORTB0);
 		// On attends que le bouton ne soit plus pressed avant de recheck a nouveau
 		while (!((PIND >> PIND2) & 1)) {}
 		// Petit delay pour eviter le bounce
