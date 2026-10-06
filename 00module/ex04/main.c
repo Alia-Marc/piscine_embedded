@@ -10,8 +10,11 @@ int	is_pressed(int bit)
 
 int main() 
 {
-	// Mets la Data Direction Register du port B en mode output sur les pins correpondant aux 4 leds
+	// Mets la Data Direction Register du port B en mode output sur les pins correspondants aux 4 leds
 	DDRB = 1 << DDB0 | 1 << DDB1 | 1 << DDB2 | 1 << DDB4;
+
+	// Mets le port D sur les pins correspondants aux deux SW1 SW2 afin d'activer le pull up
+	PORTD = 1 << PORTD2 | 1 << PORTD4;
 
 	int 	value = 0;
 	char	SW1_last_state = is_pressed(PIND2);
