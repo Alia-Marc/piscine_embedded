@@ -15,7 +15,7 @@ int main()
 	TCCR1B |= (1 << CS12) | (1 << WGM12);
 
 
-	// In TCT mode, the counter is cleared to 0,
+	// In CTC mode, the counter is cleared to 0,
 	// when the counter value TCNT1 matches either 
 	// the OCR1A or the ICR1A
 	// The OCR1A define the TOP value for the counter

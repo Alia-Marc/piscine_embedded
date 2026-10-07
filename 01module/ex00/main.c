@@ -6,7 +6,7 @@
 void	wait_ms(uint32_t ms)
 {
 	uint32_t count = 0;
-	while(count++ <= 16000000/1000*ms){}
+	while(count++ <= 16000000/1000/6*ms){}
 }
 
 

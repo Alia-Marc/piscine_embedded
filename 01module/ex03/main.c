@@ -1,8 +1,10 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+// Setup la TOP value en fonction de Freq et du prescaler
 #define TOP (F_CPU / 256)
 
+// Check sur le PIND si le bit correspondant est actif ou non
 int	is_pressed(int bit)
 {
 	return (!(PIND >> bit & 1));
@@ -23,7 +25,7 @@ int main()
 	// 16.1
 
 	// In fast PWM mode 14, the counter is cleared to 0,
-	// when the counter value TCNT1 matches  ICR1
+	// when the counter value TCNT1 matches ICR1
 	// The ICR1 define the TOP value for the counter
 
 	ICR1 = TOP;
@@ -39,9 +41,8 @@ int main()
 	while (1)
 	{
 
-
 		time = OCR1A;
-		// On regarde et assigne  l'etat actuel des deux SW1 SW2
+		// On regarde et assigne l'etat actuel des deux SW1 SW2
 		current_state = is_pressed(PIND2) << 0 | is_pressed(PIND4) << 1;
 
 		// Si l'etat actuel du PIND2 est actif et que l'etat precedant ne l'est plus, alors on incremente time, en protegeant l'overflow
@@ -54,6 +55,8 @@ int main()
 		
 		last_state = current_state;
 		OCR1A = time;
+
+		// Delay for debouncing the buttons
 		_delay_ms(20);
 	}
 }
