@@ -11,11 +11,11 @@ int main()
 	// Clear timer on compare = CTC mode, 16.9.2
 
 	// Activate lk with prescaling 256
-	// Ativate CTC mode
+	// Activate CTC mode
 	TCCR1B |= (1 << CS12) | (1 << WGM12);
 
 
-	// In TCT moe, the counter is cleared to 0,
+	// In TCT mode, the counter is cleared to 0,
 	// when the counter value TCNT1 matches either 
 	// the OCR1A or the ICR1A
 	// The OCR1A define the TOP value for the counter
