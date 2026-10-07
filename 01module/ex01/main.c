@@ -1,6 +1,6 @@
 #include <avr/io.h>
 
-#define TOP (F_CPU / 2 / 256 - 1)
+#define TOP (F_CPU / 2 / 256)
 
 int main() 
 {
