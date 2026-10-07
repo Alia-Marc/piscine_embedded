@@ -32,7 +32,7 @@ int main()
 	OCR1A = TOP / 10;
 
 	// Mets le port D sur les pins correspondants aux deux SW1 SW2 afin d'activer le pull up
-	PORTD = (1 << PORTD2) | (1 << PORTD4);
+	PORTD |= (1 << PORTD2) | (1 << PORTD4);
 
 	unsigned long 	time;
 	char			last_state = is_pressed(PIND2) | is_pressed(PIND4) << 1;
