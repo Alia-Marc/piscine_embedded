@@ -27,11 +27,15 @@ void	uart_init()
 	// Set UCSZ01 and UCSZ00 to 1 to set the 8-bit character size
 	UCSR0C |= (1 << UCSZ01) | (1 << UCSZ00);
 
-	// Set I-flag bit to 1 for interrupts to be enabled
-	SREG = (1 << 7);
+}
 
-	// Set RXCIE0 bit to one to enable the interrupt on receiving
-	UCSR0B |= (1 << RXCIE0);
+char	uart_rx(void)
+{
+	// Wait for data to be received
+	while (!(UCSR0A & (1 << RXC0))) {}
+
+	return (UDR0);
+
 }
 
 void	uart_tx(char c)
@@ -43,15 +47,15 @@ void	uart_tx(char c)
 	UDR0 = c;
 }
 
-SIGNAL(USART_RX_vect)
+void	uart_printstr(const char *str)
 {
-	char	c = UDR0;
-	if (c >= 'a' && c <= 'z')
-		c -= 32;
-	else if (c >= 'A' && c <= 'Z')
-		c += 32;
+	int i = 0;
 
-	uart_tx(c);
+	while (str[i])
+	{
+		uart_tx(str[i]);
+		i++;
+	}
 }
 
 int main() 
@@ -59,6 +63,26 @@ int main()
 	uart_init();
 	while(1)
 	{
-
+		uart_tx(uart_rx());
 	}
 }
+
+// Send data
+// void USART_Transmit( unsigned char data )
+// {
+// /* Wait for empty transmit buffer */
+// while ( !( UCSRnA & (1<<UDREn)) )
+// ;
+// /* Put data into buffer, sends the data */
+// UDRn = data;
+// }
+
+//Receive data
+// unsigned char USART_Receive( void )
+// {
+// /* Wait for data to be received */
+// while ( !(UCSRnA & (1<<RXCn)) )
+// ;
+// /* Get and return received data from buffer */
+// return UDRn;
+// }

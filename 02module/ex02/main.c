@@ -55,23 +55,3 @@ int main()
 		uart_tx(uart_rx());
 	}
 }
-
-// Send data
-// void USART_Transmit( unsigned char data )
-// {
-// /* Wait for empty transmit buffer */
-// while ( !( UCSRnA & (1<<UDREn)) )
-// ;
-// /* Put data into buffer, sends the data */
-// UDRn = data;
-// }
-
-//Receive data
-// unsigned char USART_Receive( void )
-// {
-// /* Wait for data to be received */
-// while ( !(UCSRnA & (1<<RXCn)) )
-// ;
-// /* Get and return received data from buffer */
-// return UDRn;
-// }
