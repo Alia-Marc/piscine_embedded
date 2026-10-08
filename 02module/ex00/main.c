@@ -9,12 +9,8 @@ void	uart_init()
 	// On assigne 0 au premier bit de PRR sans toucher aux autres afin de disable le power reduction de USART 
 	PRR &= ~(1 << PRUSART0);
 
-	// 
-	unsigned int ubrr = F_CPU / (16 *(BAUD + 1));
-
-	//
-	//UBRR0H = (ubrr>>8);
-	UBRR0L = ubrr;
+	//unsigned int ubrr = F_CPU / (16 *(BAUD + 1));
+	UBRR0L = 8;
 
 	// Writing this bit to one enables the USART Transmitter. 20.11.3
 	UCSR0B |= (1 << TXEN0); 
@@ -34,7 +30,7 @@ void	uart_init()
 void	uart_tx(char c)
 {
 	// Wait for empty transmit buffer
-	while (!(UCSR0A & (1<<UDRE0))) {}
+	while (!(UCSR0A & (1 << UDRE0))) {}
 
 
 	// Put c into buffer, sends the data
