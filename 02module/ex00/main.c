@@ -10,6 +10,7 @@ void	uart_init()
 	PRR &= ~(1 << PRUSART0);
 
 	//unsigned int ubrr = F_CPU / (16 *(BAUD + 1));
+	// MCU baud rate
 	UBRR0L = 8;
 
 	// Writing this bit to one enables the USART Transmitter. 20.11.3
@@ -50,25 +51,3 @@ int main()
 
 
 }
-
-
-
-// Send data
-// void USART_Transmit( unsigned char data )
-// {
-// /* Wait for empty transmit buffer */
-// while ( !( UCSRnA & (1<<UDREn)) )
-// ;
-// /* Put data into buffer, sends the data */
-// UDRn = data;
-// }
-
-//Receive data
-// unsigned char USART_Receive( void )
-// {
-// /* Wait for data to be received */
-// while ( !(UCSRnA & (1<<RXCn)) )
-// ;
-// /* Get and return received data from buffer */
-// return UDRn;
-// }
