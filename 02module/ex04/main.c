@@ -78,20 +78,14 @@ int	ft_strcmp(char *s1, char *s2)
 {
 	int i = 0;
 
-	while (s1[i]) 
-	{
-		if (s1[i] != s2[i])
-			return (0);
+	while (s1[i] && s2[i] && s1[i] == s2[i]) 
 		i++;
-	}
-	if (s1[i] != s2[i])
-		return (0);
-	return (1);
+	return (s1[i] - s2[i]);
 }
 
 int	check_creds(char *user_buf, char *pass_buf)
 {
-	if (ft_strcmp(USERNAME, user_buf) && ft_strcmp(PASSWORD, pass_buf))
+	if (ft_strcmp(USERNAME, user_buf) == 0 && ft_strcmp(PASSWORD, pass_buf) == 0)
 	{
 		uart_printstr("\n\rHello ");
 		uart_printstr(USERNAME);
@@ -105,8 +99,8 @@ int	check_creds(char *user_buf, char *pass_buf)
 
 void	enter_creds()
 {
-	char	user_buf[19] = "";
-	char	pass_buf[19] = "";
+	char	user_buf[20] = "";
+	char	pass_buf[20] = "";
 	int		length = 0;
 	int		user = 1;
 	char	c;
@@ -114,7 +108,7 @@ void	enter_creds()
 	while (user != -1)
 	{
 		c = uart_rx();
-		if (c >= 32 && c <= 126 && length < 20)
+		if (c >= 32 && c <= 126 && length < 19)
 		{
 			length++;
 			if (user)
