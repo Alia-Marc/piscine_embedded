@@ -2,10 +2,6 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-#define RED (1 << PORTD5)
-#define GREEN (1 << PORTD6)
-#define BLUE (1 << PORTD3)
-
 uint8_t pos = 0;
 
 void init_rgb()
