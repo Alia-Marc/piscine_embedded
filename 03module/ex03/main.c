@@ -57,8 +57,8 @@ void init_rgb()
 	DDRD = (1 << DDD3) | (1 << DDD5) | (1 << DDD6);
 
 	// Set I-flag bit to 1 for interrupts to be enabled
-	SREG = (1 << 7);
-	
+	SREG = (1 << SREG_I);
+
 	// Set timer0 to PWM phase correct mode with no prescaling
 	// It clear and toggle OC0B and OC0A, for LED_R and LED_G
 	TCCR0A = (1 << WGM00) | (1 << COM0B1) | (1 << COM0A1);

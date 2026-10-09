@@ -9,9 +9,8 @@ void	uart_init()
 	// On assigne 0 au premier bit de PRR sans toucher aux autres afin de disable le power reduction de USART 
 	PRR &= ~(1 << PRUSART0);
 
-	//unsigned int ubrr = F_CPU / (16 *(BAUD + 1));
 	// MCU baud rate
-	UBRR0L = 8;
+	UBRR0L = F_CPU / (16 * BAUD);
 
 	// Writing this TXEN0 bit to one enables the USART Transmitter. 20.11.3
 	// Writing this RXEN0 bit to one enables the USART Receiver.
@@ -28,7 +27,7 @@ void	uart_init()
 	UCSR0C |= (1 << UCSZ01) | (1 << UCSZ00);
 
 	// Set I-flag bit to 1 for interrupts to be enabled
-	SREG = (1 << 7);
+	SREG = (1 << SREG_I);
 
 	// Set RXCIE0 bit to one to enable the interrupt on receiving
 	UCSR0B |= (1 << RXCIE0);

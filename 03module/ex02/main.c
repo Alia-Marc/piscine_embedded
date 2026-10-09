@@ -10,7 +10,7 @@ void init_rgb()
 	DDRD = (1 << DDD3) | (1 << DDD5) | (1 << DDD6);
 
 	// Set I-flag bit to 1 for interrupts to be enabled
-	SREG = (1 << 7);
+	SREG = (1 << SREG_I);
 
 	// Enable timer1 with CTC mode on OCR1A with a prescaler of 1024
 	TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
