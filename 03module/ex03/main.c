@@ -58,15 +58,7 @@ void init_rgb()
 
 	// Set I-flag bit to 1 for interrupts to be enabled
 	SREG = (1 << 7);
-
-	// // Enable timer1 with CTC mode on OCR1A with a prescaler of 1024
-	// TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
-	// OCR1A = 255;
-
-	// // Set OCIE1A bit to 1 for the output compare A match Interrupt enable.
-	// // So when TCNT1 reaches the TOP, the interrupt signal is sent
-	// TIMSK1 = (1 << OCIE1A);
-
+	
 	// Set timer0 to PWM phase correct mode with no prescaling
 	// It clear and toggle OC0B and OC0A, for LED_R and LED_G
 	TCCR0A = (1 << WGM00) | (1 << COM0B1) | (1 << COM0A1);

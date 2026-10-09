@@ -31,7 +31,7 @@ int	hex_cast(char c)
 		return (c - 'W');
 }
 
-void	translate_hex(char *hex_number)
+void	translate_hex_and_set(char *hex_number)
 {
 	uint8_t		r, g, b;
 
@@ -74,12 +74,9 @@ void	uart_rx_parse_hex_color()
 	}
 	else if (c == 13 && length == 7)
 	{
-		uart_printstr("\t\t\tE");
-		uart_printstr(hex_number);
 		uart_tx('\n');
 		uart_tx('\r');
 		length = 0;
-		
-		translate_hex(hex_number);
+		translate_hex_and_set(hex_number);
 	}
 }
