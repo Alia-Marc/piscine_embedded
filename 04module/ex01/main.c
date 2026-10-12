@@ -1,5 +1,5 @@
 #include <avr/io.h>
-#include <util/delay.h>
+
 #include <avr/interrupt.h>
 
 void	init()
@@ -12,7 +12,7 @@ void	init()
 
 	// Activate clk with prescaling 256
 	// Activate mode 14 fast PWM mode with ICR1 on TOP value
-	TCCR1B |= (1 << CS12) | (1 << WGM12) |  (1 << WGM13);
+	TCCR1B |= (1 << CS12) | (1 << WGM13);
 	TCCR1A |= (1 << WGM11) | (1 << COM1A1);
 
 	ICR1 = 250;
