@@ -10,17 +10,20 @@ void	init()
 	// Set I-flag bit to 1 for interrupts to be enabled
 	SREG = (1 << SREG_I);
 
-	// Setup timer1 in pahse correct PWM mode 8bit with ICR1 on top, no prescaler
-	TCCR1A = (1 << WGM10) | (1 << COM1A1);
-	TCCR1B = (1 << CS10);
+	// Activate clk with prescaling 256
+	// Activate mode 14 fast PWM mode with ICR1 on TOP value
+	TCCR1B |= (1 << CS12) | (1 << WGM12) |  (1 << WGM13);
+	TCCR1A |= (1 << WGM11) | (1 << COM1A1);
 
+	ICR1 = 250;
 	OCR1A = 0;
 
-	// Setup timer0 in CTC mode with OCR0A on top with a prescaling of 1024
+	// Setup timer0 in CTC mode with OCR0A on top with a prescaling of 256
 	TCCR0A = (1 << WGM01);
-	TCCR0B = (1 << CS02) | (1 << CS00);
-	// F_CPU / 1024 / 510
-	OCR0A = 31;
+	TCCR0B = (1 << CS02);
+
+	// F_CPU / 256 / 500
+	OCR0A = F_CPU / 256 / 500;
 
 	// Set OCIE0A bit to 1 for the output compare A match Interrupt enable.
 	// So when TCNT0 reaches the TOP, the interrupt signal is sent
@@ -32,7 +35,7 @@ SIGNAL(TIMER0_COMPA_vect)
 {
 	static int8_t direction = 1;
 
-	if (OCR1A == 255)
+	if (OCR1A == 250)
 		direction = -1;
 	else if (OCR1A == 0)
 		direction = 1;
