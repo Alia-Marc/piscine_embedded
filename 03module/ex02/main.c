@@ -62,9 +62,12 @@ void wheel(uint8_t pos)
 
 SIGNAL(TIMER1_COMPA_vect)
 {
-	if (pos == 255)
-		pos = 0;
 	wheel(pos);
+	if (pos == 255)
+	{
+		pos = 0;
+		return ;
+	}
 	pos++;
 }
 
