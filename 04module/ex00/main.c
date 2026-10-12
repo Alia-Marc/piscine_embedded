@@ -76,7 +76,6 @@ SIGNAL(INT0_vect)
 int main()
 {
 	init();
-	uart_init();
 	while (1)
 	{
 	
