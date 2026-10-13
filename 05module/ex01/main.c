@@ -38,16 +38,6 @@ char	bin_to_hex(uint8_t small_byte)
 	return (small_byte + '0');
 }
 
-void	print_ADC0(void)
-{
-	uint8_t	byte = read_ADCH();
-
-	uart_tx(bin_to_hex(byte >> 4));
-	uart_tx(bin_to_hex(byte & 0x0F));
-	uart_tx('\r');
-	uart_tx('\n');
-}
-
 uint8_t	read_RV1(void)
 {
 	// 24-3 Set REFS0,setup ADC with AVcc in reference
