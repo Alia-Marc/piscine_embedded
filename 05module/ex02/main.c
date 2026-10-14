@@ -23,7 +23,7 @@ void	adc_init()
 	ADMUX = (1 << REFS0);
 }
 
-int	read_ADC_data_register(void)
+uint16_t	read_ADC_data_register(void)
 {
 	ADCSRA |= (1 << ADSC);
 	while (ADCSRA & (1 << ADSC));
@@ -50,27 +50,24 @@ void	uart_printnbr(uint16_t n)
 uint16_t	read_RV1(void)
 {
 	// 24-3 Set REFS0,setup ADC with AVcc in reference
-	// Then set ADLAR to one, to only have to read ADCH when using only 8 bit
-	// Set no MUX to choose readng from ADC0
-	ADMUX = (1 << REFS0) | (1 << ADLAR);
+	// Set no MUX to choose reading from ADC0
+	ADMUX = (1 << REFS0);
 	return (read_ADC_data_register());
 }
 
 uint16_t	read_LDR(void)
 {
 	// 24-3 Set REFS0,setup ADC with AVcc in reference
-	// Then set ADLAR to one, to only have to read ADCH when using only 8 bit
-	// Set no MUX0 to choose readng from ADC1, 24-4
-	ADMUX = (1 << REFS0) | (1 << ADLAR) | (1 << MUX0);
+	// Set no MUX0 to choose reading from ADC1, 24-4
+	ADMUX = (1 << REFS0) | (1 << MUX0);
 	return (read_ADC_data_register());
 }
 
 uint16_t	read_NTC(void)
 {
 	// 24-3 Set REFS0,setup ADC with AVcc in reference
-	// Then set ADLAR to one, to only have to read ADCH when using only 8 bit
-	// Set MUX1 to choose readng from ADC2, 24-4
-	ADMUX = (1 << REFS0) | (1 << ADLAR)| (1 << MUX1);
+	// Set MUX1 to choose reading from ADC2, 24-4
+	ADMUX = (1 << REFS0) | (1 << MUX1);
 	
 	return (read_ADC_data_register());
 }
@@ -81,11 +78,11 @@ void	read_and_print_all_potent(void)
 	uint16_t	LDR_byte = read_LDR();
 	uint16_t	NTC_byte = read_NTC();
 
-	uart_printnbr(RV1_byte >> 6);
+	uart_printnbr(RV1_byte);
 	uart_printstr(", ");
-	uart_printnbr(LDR_byte >> 6);
+	uart_printnbr(LDR_byte);
 	uart_printstr(", ");
-	uart_printnbr(NTC_byte >> 6);
+	uart_printnbr(NTC_byte);
 	uart_printstr("\r\n");
 }
 
