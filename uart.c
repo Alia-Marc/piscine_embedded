@@ -54,3 +54,19 @@ void	uart_printstr(const char *str)
 		i++;
 	}
 }
+
+void	uart_printnbr(int n)
+{
+	if (n >= 0 && n < 10)
+		uart_tx(n + 48);
+	else if (n < 0)
+	{
+		uart_tx('-');
+		uart_printnbr(n * (-1));
+	}
+	else
+	{
+		uart_printnbr(n / 10);
+		uart_printnbr(n % 10);
+	}
+}
