@@ -2,6 +2,11 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
+#  define FT_SIGNAL(vector)					\
+    void vector (void) __attribute__ ((__signal__, __INTR_ATTRS));		\
+    void vector (void)
+
+
 uint8_t pos = 0;
 
 void init_rgb()
@@ -55,7 +60,7 @@ void wheel(uint8_t pos)
 	}
 }
 
-SIGNAL(TIMER1_COMPA_vect)
+FT_SIGNAL(TIMER1_COMPA_vect)
 {
 	wheel(pos);
 	if (pos == 255)

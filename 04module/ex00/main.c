@@ -2,6 +2,11 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
+#  define FT_SIGNAL(vector)					\
+    void vector (void) __attribute__ ((__signal__, __INTR_ATTRS));		\
+    void vector (void)
+
+
 int toggle = 1;
 
 void	init()
@@ -23,7 +28,7 @@ void	init()
 }
 
 
-SIGNAL(INT0_vect)
+FT_SIGNAL(INT0_vect)
 {
 	// Disable interrupt for the associated pin
 	EIMSK &= ~(1 << INT0);
@@ -42,7 +47,7 @@ SIGNAL(INT0_vect)
 		EICRA &= ~(1 << ISC00);
 		toggle = 1;
 	}
-	_delay_ms(50);
+	_delay_ms(20);
 
 	// Enable interrupt for the associated pin
 	EIMSK |= (1 << INT0);

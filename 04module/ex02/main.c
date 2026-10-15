@@ -2,6 +2,11 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
+#  define FT_SIGNAL(vector)					\
+    void vector (void) __attribute__ ((__signal__, __INTR_ATTRS));		\
+    void vector (void)
+
+
 void	init()
 {
 	// Enable output direction for the light D1 D2 D3 D4
@@ -32,7 +37,7 @@ int 	toggle_SW1 = 1;
 int		toggle_SW2 = 1;
 uint8_t value = 0;
 
-SIGNAL(INT0_vect)
+FT_SIGNAL(INT0_vect)
 {
 	// Disable interrupt for the associated pin
 	EIMSK &= ~(1 << INT0);
@@ -54,7 +59,7 @@ SIGNAL(INT0_vect)
 		EICRA &= ~(1 << ISC00);
 		toggle_SW1 = 1;
 	}
-	_delay_ms(50);
+	_delay_ms(20);
 
 	// Enable interrupt for the associated pin
 	EIMSK |= (1 << INT0);
@@ -62,7 +67,7 @@ SIGNAL(INT0_vect)
 	EIFR |= (1 << INTF0);
 }
 
-SIGNAL(PCINT2_vect)
+FT_SIGNAL(PCINT2_vect)
 {
 	// Disable interrupt for the associated pin
 	PCMSK2 &= ~(1 << PCINT20);
@@ -77,7 +82,7 @@ SIGNAL(PCINT2_vect)
 	}
 	else
 		toggle_SW2 = 1;
-	_delay_ms(50);
+	_delay_ms(20);
 
 	// Enable interrupt for the associated pin
 	PCMSK2 |= (1 << PCINT20);

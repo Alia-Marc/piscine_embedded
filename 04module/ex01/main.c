@@ -1,6 +1,11 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#  define FT_SIGNAL(vector)					\
+    void vector (void) __attribute__ ((__signal__, __INTR_ATTRS));		\
+    void vector (void)
+
+
 void	init()
 {
 	// Enable output direction for the light D2
@@ -30,7 +35,7 @@ void	init()
 	
 }
 
-SIGNAL(TIMER0_COMPA_vect)
+FT_SIGNAL(TIMER0_COMPA_vect)
 {
 	static int8_t direction = 1;
 
