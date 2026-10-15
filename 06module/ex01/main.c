@@ -140,7 +140,7 @@ int	get_AHT20_measurement(void)
 	for (int i = 0; i < 7; i++)
 	{
 		if (i == 6)
-			i2c_read_last_nack();
+			print_hex_value(i2c_read_last_nack());
 		else
 			i2c_read();
 		uart_tx(' ');
