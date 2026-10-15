@@ -71,6 +71,17 @@ void	uart_printnbr(int n)
 	}
 }
 
+void	uart_printnbr_u16b(uint16_t n)
+{
+	if (n >= 0 && n < 10)
+		uart_tx(n + 48);
+	else
+	{
+		uart_printnbr(n / 10);
+		uart_printnbr(n % 10);
+	}
+}
+
 void uart_printHEX8b(char c)
 {
 	uint8_t	n = c;
