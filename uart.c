@@ -70,3 +70,16 @@ void	uart_printnbr(int n)
 		uart_printnbr(n % 10);
 	}
 }
+
+void uart_printhex8b(char c)
+{
+	uint8_t	n = c;
+	int	n1 = n >> 4;
+	int	n2 = n & 0x0F;
+	if (n1 > 9)
+		n1 += 7;
+	uart_tx(n1 + '0');
+	if (n2 > 9)
+		n2 += 7;
+	uart_tx(n2 + '0');
+}
