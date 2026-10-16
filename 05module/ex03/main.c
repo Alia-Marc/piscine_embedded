@@ -23,7 +23,7 @@ void	adc_init()
 	ADMUX |= (1 << REFS0) | (1 << REFS1);
 }
 
-uint16_t	read_ADC_data_register(void)
+int16_t	read_ADC_data_register(void)
 {
 	ADCSRA |= (1 << ADSC);
 	while (ADCSRA & (1 << ADSC));
@@ -31,7 +31,7 @@ uint16_t	read_ADC_data_register(void)
 	return (ADC);
 }
 
-void	uart_printnbr(uint16_t n)
+void	uart_printnbr(int16_t n)
 {
 	if (n >= 0 && n < 10)
 		uart_tx(n + 48);
