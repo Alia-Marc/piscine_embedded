@@ -179,5 +179,14 @@ int main()
 	while (1)
 	{
 		trigger_AHT20_measurement();
+
+		// 2.4 When the measurement frequency is too
+		// high, the temperature of the sensor itself will rise,
+		// which will affect the measurement accuracy. In order
+		// to make its temperature rise below 0.1, the
+		// activation time of AHT20 should not exceed 10% of
+		// the measurement time - it is recommended to
+		// measure data every 2 seconds.
+		_delay_ms(2000);
 	}
 }
