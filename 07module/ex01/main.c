@@ -3,6 +3,9 @@
 
 #include "uart.h"
 
+#define RED "\e[0;31m"
+#define RESET "\033[0m"
+
 uint16_t	hex_cast(uint16_t c)
 {
 	if (c >= '0' && c <= '9')
@@ -118,14 +121,37 @@ bool	is_hexadecimal(char c)
 
 void	append_to_str(char *str, char c, int i)
 {
-	str[i - 1] = c;
-	str[i] = '\0';
+	str[i] = c;
+	str[i + 1] = '\0';
 }
 
 void	reset_buf(char *buf)
 {
 	for (int i = 0; i < 6; i++)
 		buf[i] = '\0';
+}
+
+bool	parse_entry(char *buf, uint8_t length)
+{
+	uint8_t	first_byte_len = 0;
+	uint8_t	second_byte_len = 0;
+	bool	seen_space = false;
+
+	for (int i = 0; i < length; i++)
+	{
+		if (buf[i] == ' ')
+		{
+			seen_space = true;
+			continue ;
+		}
+		if (!seen_space)
+			first_byte_len++;
+		else
+			second_byte_len++;
+	}
+	if ((first_byte_len < 1 || first_byte_len > 3) || second_byte_len != 2 || (first_byte_len == 3 && buf[0] > '3'))
+		return (0);
+	return (1);
 }
 
 bool	check_entry(char *buf, uint8_t length)
@@ -139,13 +165,14 @@ bool	check_entry(char *buf, uint8_t length)
 	}
 	if (seen_space > 1)
 		return (0);
+	return (parse_entry(buf, length));
 }
 
 void	loop(void)
 {
 	uint16_t	address;
 	uint16_t	data;
-	char		buf[6];
+	char		buf[7];
 	uint8_t		length = 0;
 	char		c;
 
@@ -153,7 +180,7 @@ void	loop(void)
 	while (1)
 	{
 		c = uart_rx();
-		if (is_hexadecimal(c) || (c == ' ' && (length > 0 || length < 4)) && length < 6)
+		if ((is_hexadecimal(c) || (c == ' ' && (length > 0 && length < 4))) && length < 6)
 		{
 			append_to_str(buf, c, length);
 			length++;
@@ -171,9 +198,14 @@ void	loop(void)
 		{
 			uart_tx('\r');
 			uart_tx('\n');
-			if (check_entry)
+			if (check_entry(buf, length))
 				uart_printstr("PARSE GOOD\n\r");
-			uart_printstr("WRONG ENTRY TYPE");
+			else
+				uart_printstr("Wrong format. Please use one of theses formats : x xx; xx xx; xxx xx. Max first arg: 3FF\n\r");
+			//uart_printstr("WRONG ENTRY TYPE\n\r");
+			reset_buf(buf);
+			length = 0;
+			uart_tx('>');
 		}
 	}
 }
@@ -181,18 +213,9 @@ void	loop(void)
 int main()
 {
 	uart_init();
-	loop();
-
-	// print_EEPROM();
-
-	// if (!is_already_there(6, 'V'))
-	// {
-	// 	EEPROM_write(6, 'V');
-	// 	print_EEPROM();
-	// }
 
 	while (1)
 	{
-
+		loop();
 	}
 }
