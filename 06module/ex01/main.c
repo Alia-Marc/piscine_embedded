@@ -109,21 +109,30 @@ void i2c_write(unsigned char data)
 
 int	init_AHT20(void)
 {
-	if (i2c_init_write())
+	if (i2c_init_read())
 		return (1);
 
-	// Initialize AHT20, send init command, then the two byte parameters 5.4.1, then wait 10ms
-	i2c_write(AHT20_INIT_BYTE);
-	if (TW_STATUS != TW_MT_DATA_ACK)
-		return (1);
-	i2c_write(AHT20_INIT_PARAM_BYTE);
-	if (TW_STATUS != TW_MT_DATA_ACK)
-		return (1);
-	i2c_write(0);
-	if (TW_STATUS != TW_MT_DATA_ACK)
-		return (1);
+	// 5.4.1 We check if the calibration bit is set or not. If the bit is 0, it means we need to calibrate the sensor by sending 0xbe command and the params 0x08 and 0x00
+	if (!(i2c_read_last_nack() >> 3 & 1))
+	{
+		if (i2c_init_write())
+			return (1);
+
+		// Initialize AHT20, send init command, then the two byte parameters 5.4.1, then wait 10ms
+		i2c_write(AHT20_INIT_BYTE);
+		if (TW_STATUS != TW_MT_DATA_ACK)
+			return (1);
+		i2c_write(AHT20_INIT_PARAM_BYTE);
+		if (TW_STATUS != TW_MT_DATA_ACK)
+			return (1);
+		i2c_write(0);
+		if (TW_STATUS != TW_MT_DATA_ACK)
+			return (1);
+	}
+
 	i2c_stop();
 	_delay_ms(10);
+	return (0);
 }
 
 int	get_AHT20_measurement(void)
@@ -178,7 +187,8 @@ int main()
 		return (uart_printstr("ERROR while AHT20 initialization"), 1);
 	while (1)
 	{
-		trigger_AHT20_measurement();
+		if (trigger_AHT20_measurement())
+			return (uart_printstr("ERROR while AHT20 measurement"), 1);
 
 		// 2.4 When the measurement frequency is too
 		// high, the temperature of the sensor itself will rise,
