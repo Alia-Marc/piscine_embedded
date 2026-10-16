@@ -14,98 +14,6 @@
 #define AHT20_TRIGGER_MEASURE_PARAM_BYTE	0b10101100
 
 
-void	uart_print_TW_STATUS(void)
-{
-	switch (TW_STATUS)
-	{
-		case TW_START:
-			uart_printstr("TW_START");
-			break;
-		case TW_REP_START:
-			uart_printstr("TW_REP_START");
-			break;
-		case TW_MT_SLA_ACK:
-			uart_printstr("TW_MT_SLA_ACK");
-			break;
-		case TW_MT_SLA_NACK:
-			uart_printstr("TW_MT_SLA_NACK");
-			break;
-		case TW_MT_DATA_ACK:
-			uart_printstr("TW_MT_DATA_ACK");
-			break;
-		case TW_MT_DATA_NACK:
-			uart_printstr("TW_MT_DATA_NACK");
-			break;
-		case TW_MR_SLA_ACK:
-			uart_printstr("TW_MR_SLA_ACK");
-			break;
-		case TW_MR_SLA_NACK:
-			uart_printstr("TW_MR_SLA_NACK");
-			break;
-		case TW_MR_DATA_ACK:
-			uart_printstr("TW_MR_DATA_ACK");
-			break;
-		case TW_MR_DATA_NACK:
-			uart_printstr("TW_MR_DATA_NACK");
-			break;
-		case TW_ST_SLA_ACK:
-			uart_printstr("TW_ST_SLA_ACK");
-			break;
-		case TW_ST_ARB_LOST_SLA_ACK:
-			uart_printstr("TW_ST_ARB_LOST_SLA_ACK");
-			break;
-		case TW_ST_DATA_ACK:
-			uart_printstr("TW_ST_DATA_ACK");
-			break;
-		case TW_SR_SLA_ACK:
-			uart_printstr("TW_SR_SLA_ACK");
-			break;
-		case TW_SR_ARB_LOST_SLA_ACK:
-			uart_printstr("TW_SR_ARB_LOST_SLA_ACK");
-			break;
-		case TW_SR_GCALL_ACK:
-			uart_printstr("TW_SR_GCALL_ACK");
-			break;
-		case TW_SR_ARB_LOST_GCALL_ACK:
-			uart_printstr("TW_SR_ARB_LOST_GCALL_ACK");
-			break;
-		case TW_SR_DATA_ACK:
-			uart_printstr("TW_SR_DATA_ACK");
-			break;
-		case TW_SR_GCALL_DATA_ACK:
-			uart_printstr("TW_SR_GCALL_DATA_ACK");
-			break;
-		case TW_MT_ARB_LOST:
-			uart_printstr("TW_MT_ARB_LOST");
-			break;
-		case TW_SR_DATA_NACK:
-			uart_printstr("TW_SR_DATA_NACK");
-			break;
-		case TW_SR_GCALL_DATA_NACK:
-			uart_printstr("TW_SR_GCALL_DATA_NACK");
-			break;
-		case TW_SR_STOP:
-			uart_printstr("TW_SR_STOP");
-			break;
-		case TW_ST_DATA_NACK:
-			uart_printstr("TW_ST_DATA_NACK");
-			break;
-		case TW_ST_LAST_DATA:
-			uart_printstr("TW_ST_LAST_DATA");
-			break;
-		case TW_NO_INFO:
-			uart_printstr("TW_NO_INFO");
-			break;
-		case TW_BUS_ERROR:
-			uart_printstr("TW_BUS_ERROR");
-			break;
-		default:
-			uart_printstr("Should not happend");
-			break;
-	}
-	uart_printstr("\n\r");
-}
-
 void print_hex_value(char c)
 {
 	uint8_t	n = c;
@@ -118,7 +26,6 @@ void print_hex_value(char c)
 		n2 += 7;
 	uart_tx(n2 + '0');
 }
-
 
 void i2c_init(void)
 {
@@ -140,7 +47,6 @@ void i2c_start(void)
 	while (!(TWCR & (1 << TWINT)))
 		;
 
-	//uart_print_TW_STATUS();
 }
 
 void i2c_stop(void)
@@ -149,7 +55,6 @@ void i2c_stop(void)
 	TWCR = (1 << TWINT) | (1 << TWSTO) | (1 << TWEN);
 	while (!(TWCR & (1 << TWSTO)))
 		;
-	//uart_print_TW_STATUS();
 }
 
 // MR mode
@@ -161,7 +66,6 @@ int	i2c_init_read(void)
 	TWCR = (1 << TWINT) | (1 << TWEN);
 	while (!(TWCR & (1 << TWINT)))
 		;
-	//uart_print_TW_STATUS();
 	if (TW_STATUS != TW_MR_SLA_ACK)
 		return (1);
 	return (0);
@@ -180,7 +84,6 @@ uint8_t	i2c_read_last_nack(void)
 	TWCR = (1 << TWINT) | (1 << TWEN);
 	while (!(TWCR & (1 << TWINT)))
 		;
-	//uart_print_TW_STATUS();
 	return (TWDR);
 }
 
@@ -193,7 +96,6 @@ int	i2c_init_write(void)
 	TWCR = (1 << TWINT) | (1 << TWEN);
 	while (!(TWCR & (1 << TWINT)))
 		;
-	//uart_print_TW_STATUS();
 	if (TW_STATUS != TW_MT_SLA_ACK)
 		return (1);
 	return (0);
@@ -205,7 +107,6 @@ void i2c_write(unsigned char data)
 	TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
 	while (!(TWCR & (1 << TWINT)))
 		;
-	//uart_print_TW_STATUS();
 }
 
 int	init_AHT20(void)
