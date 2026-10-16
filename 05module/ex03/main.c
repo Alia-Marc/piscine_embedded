@@ -49,9 +49,9 @@ void	uart_printnbr(uint16_t n)
 
 void	read_and_print_all_potent(void)
 {
-	// -289 mv, 24-2, it says it's The voltage sensitivity is approximately 1 mV/°C and the accuracy of the temperature measurement is +/- 10°C
-	// Since it's 314mV when it's 25°C, 314-25=289 to get the mV for 0°C
-	uart_printnbr(read_ADC_data_register() - 289);
+	// -327 mv, 23-8, it says it's The voltage sensitivity is approximately 1 mV/°C and the accuracy of the temperature measurement is +/- 10°C
+	// Since it's 0x0160|352 when it's 25°C, 352-25=320 to get the approximative mV value for 0°C
+	uart_printnbr(read_ADC_data_register() - 327);
 	uart_printstr("\r\n");
 }
 
